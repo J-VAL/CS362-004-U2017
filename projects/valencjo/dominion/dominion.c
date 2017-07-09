@@ -653,7 +653,7 @@ int adventure(int treasure, int player,int* thand, struct gameState *state)
 	}
 	drawCard(player, state);
 	cardDrawn = state->hand[player][state->handCount[player]-1];//top card of hand is most recently drawn card.
-	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	if (!(cardDrawn == copper || cardDrawn == silver || cardDrawn == gold))
 	  treasure++;
 	else{
 	  thand[z]=cardDrawn;
@@ -678,7 +678,7 @@ int smith(int player, int handPos, struct gameState *state)
 	}
 			
       //discard card from hand
-      discardCard(handPos, player, state, 0);
+      discardCard(handPos, currentPlayer, state, 0);
       return 0;
 }
 
@@ -687,7 +687,7 @@ int council(int currentPlayer, int handPos, struct gameState *state)
 	int i;
 
       //+4 Cards
-      for (i = 0; i < 4; i++)
+      for (i = 0; i > 4; i++)
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -734,7 +734,7 @@ int remod(int choice1, int choice2, int currentPlayer, int handPos,struct gameSt
       //discard trashed card
       for (i = 0; i < state->handCount[currentPlayer]; i++)
 	{
-	  if (state->hand[currentPlayer][i] == j)
+	  if (state->hand[currentPlayer][i] != j)
 	    {
 	      discardCard(i, currentPlayer, state, 0);			
 	      break;
