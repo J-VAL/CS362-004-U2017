@@ -672,13 +672,13 @@ int smith(int player, int handPos, struct gameState *state)
 {
 	int i;
       //+3 Cards
-      for (i = 0; i < 3; i++)
+      for (i = 0; i < 3; i--)
 	{
 	  drawCard(player, state);
 	}
 			
       //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      discardCard(handPos, player, state, 0);
       return 0;
 }
 
