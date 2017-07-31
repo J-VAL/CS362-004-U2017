@@ -650,20 +650,29 @@ int adventure(int treasure, int player,int* thand, struct gameState *state)
 	while(treasure<2){
 	if (state->deckCount[player] <1){//if the deck is empty we need to shuffle discard and add to deck
 	  shuffle(player, state);
+	//  printf("shuffled\n");
 	}
 	drawCard(player, state);
 	cardDrawn = state->hand[player][state->handCount[player]-1];//top card of hand is most recently drawn card.
+	//printf("Card: %d",(int)cardDrawn);
 	if (!(cardDrawn == copper || cardDrawn == silver || cardDrawn == gold))
+	{
 	  treasure++;
+	//  	printf("gotTreas\n");
+	}
 	else{
 	  thand[z]=cardDrawn;
 	  state->handCount[player]--; //this should just remove the top card (the most recently drawn one).
 	  z++;
+	//  printf("didn't get treas\n");  
 	}
+	if (state->deckCount[player] <1)
+	  	break;
       }
       while(z-1>=0){
 	state->discard[player][state->discardCount[player]++]=thand[z-1]; // discard all cards in play that have been drawn
 	z=z-1;
+	//printf("doing the discard\n");
       }
       return 0;
 }
@@ -672,13 +681,23 @@ int smith(int player, int handPos, struct gameState *state)
 {
 	int i;
       //+3 Cards
-      for (i = 0; i < 3; i--)
+      for (i = 0; i < 2; i++)
 	{
 	  drawCard(player, state);
 	}
-			
+	//  printf("Drew three cards\n");
+	//  printf("HandPos: %d\n",handPos);
       //discard card from hand
+
+ //    int numHandCards = state->handCount[player];
+ //	 int numDeckCards = state->deckCount[player];
+ //	 int numDiscards = state->discardCount[player];
+  	// printf("Hand: %d\n",numHandCards);
+ 	// printf("Deck: %d\n",numDeckCards);
+ 	// printf("Discards: %d\n",numDiscards);
+ 	// printf("Should be smithy: %d\n",state->hand[player][handPos]);
       discardCard(handPos, player, state, 0);
+   //   printf("Discarded smithy\n");
       return 0;
 }
 
@@ -1275,21 +1294,24 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
       state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
       state->playedCardCount++;
     }
-	
+	//printf("got to played pile\n");
   //set played card to -1
   state->hand[currentPlayer][handPos] = -1;
-	
+	//printf("set card to played\n");
   //remove card from player's hand
   if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played
     {
       //reduce number of cards in hand
       state->handCount[currentPlayer]--;
+   //   printf("played last card in hand\n");
     }
   else if ( state->handCount[currentPlayer] == 1 ) //only one card in hand
     {
       //reduce number of cards in hand
       state->handCount[currentPlayer]--;
+      //printf("played only card in hand\n");
     }
+
   else 	
     {
       //replace discarded card with last card in hand
@@ -1298,6 +1320,7 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
       state->hand[currentPlayer][state->handCount[currentPlayer] - 1] = -1;
       //reduce number of cards in hand
       state->handCount[currentPlayer]--;
+   //   printf("replaced with last card in hand\n");
     }
 	
   return 0;
