@@ -36,7 +36,7 @@ int testSmithy(int player, int handPos, struct gameState *gState)
     worked = 0;
   }
   //printf("Ran through once.\n");
-  if(gState->handCount[player] != (numHandCards+2) && (numDiscards + numDeckCards) >2)
+  if(gState->handCount[player] != (numHandCards+2) && (numDiscards + numDeckCards) >2 && !lessThan)
   {
     printf("wrong number of cards in hand previous:%d now: %d\n",numHandCards,gState->handCount[player]);
     worked = 0;
@@ -58,10 +58,10 @@ int testSmithy(int player, int handPos, struct gameState *gState)
     
     printf("Wrong deck and discard smaller than 3\n");
    }
-   if(gState->handCount[player] != (numHandCards + numDeckCards + numDiscards))
+   if(gState->handCount[player] != (numHandCards + numDeckCards + numDiscards - 1))
    {
     worked = 0;
-    printf("Wrong hand count with deck and discard smaller than 3");
+    printf("Wrong hand count with deck and discard smaller than 3\n");
    }
   }
   else

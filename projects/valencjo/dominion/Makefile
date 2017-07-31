@@ -48,6 +48,9 @@ randomTestAdventure: randomtestadventurer.c dominion.o rngs.o
 randomTestSmithy: randomtestcard1.c dominion.o rngs.o
 	gcc -o randomtestcard1 -g  randomtestcard1.c dominion.o rngs.o $(CFLAGS)
 
+randomTestCouncil: randomtestcard2.c dominion.o rngs.o
+	gcc -o randomtestcard2 -g  randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+
 testAll: dominion.o testSuite.c
 	gcc -o testSuite testSuite.c -g  dominion.o rngs.o $(CFLAGS)
 
@@ -72,14 +75,19 @@ runAllTests: unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtes
 	cat dominion.c.gcov >> unittestresults.out
 
 runRandomAdventure: randomtestadventurer
-	./randomtestadventurer &> randomtestadventureresult.out
-	gcov dominion.c >> randomtestadventureresult.out
-	cat dominion.c.gcov >> randomtestadventureresult.out
+	./randomtestadventurer &> randomtestadventurer.out
+	gcov dominion.c >> randomtestadventurer.out
+	cat dominion.c.gcov >> randomtestadventurer.out
 
 runRandomSmithy: randomtestcard1
-	./randomtestcard1 &> randomtestsmithyresult.out
-	gcov dominion.c >> randomtestsmithyresult.out
-	cat dominion.c.gcov >> randomtestsmithyresult.out
+	./randomtestcard1 &> randomtestcard1.out
+	gcov dominion.c >> randomtestcard1.out
+	cat dominion.c.gcov >> randomtestcard1.out
+
+runRandomCouncil: randomtestcard2
+	./randomtestcard2 &> randomtestcard2.out
+	gcov dominion.c >> randomtestcard2.out
+	cat dominion.c.gcov >> randomtestcard2.out
 
 rununittest1: unittest1
 	./unittest1 &> unittest1result.out

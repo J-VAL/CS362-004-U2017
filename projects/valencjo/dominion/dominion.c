@@ -647,9 +647,11 @@ int adventure(int treasure, int player,int* thand, struct gameState *state)
 {
 	int z = 0;
 	int cardDrawn;
+	int shuffleFlag = 0;
 	while(treasure<2){
 	if (state->deckCount[player] <1){//if the deck is empty we need to shuffle discard and add to deck
 	  shuffle(player, state);
+	  shuffleFlag = 1;
 	//  printf("shuffled\n");
 	}
 	drawCard(player, state);
@@ -666,7 +668,7 @@ int adventure(int treasure, int player,int* thand, struct gameState *state)
 	  z++;
 	//  printf("didn't get treas\n");  
 	}
-	if (state->deckCount[player] <1)
+	if (state->deckCount[player] <1 && shuffleFlag)
 	  	break;
       }
       while(z-1>=0){
@@ -710,22 +712,23 @@ int council(int currentPlayer, int handPos, struct gameState *state)
 	{
 	  drawCard(currentPlayer, state);
 	}
-			
+	//		printf("drew 4\n");
       //+1 Buy
       state->numBuys++;
-			
+	//		printf("numbuys\n");
       //Each other player draws a card
       for (i = 0; i < state->numPlayers; i++)
 	{
 	  if ( i != currentPlayer )
 	    {
 	      drawCard(i, state);
+	 //     printf("others draw\n");
 	    }
 	}
 			
       //put played card in played card pile
       discardCard(handPos, currentPlayer, state, 0);
-			
+	//		printf("discard\n");
       return 0;
 }
 
