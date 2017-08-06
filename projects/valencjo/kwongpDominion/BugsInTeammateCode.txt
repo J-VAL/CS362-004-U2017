@@ -1,0 +1,56 @@
+I found two bugs while running my tests against my teammate's code.
+
+I found the first bug by running my random test for the adventurer code.  My test output these messages, which were very indicative 
+of what the problem was:
+
+Testing adventurer.
+
+Didn't gain two more treasure cards to hand! new:9 old6TEST FAILED!
+
+Didn't gain two more treasure cards to hand! new:53 old50TEST FAILED!
+
+Didn't gain two more treasure cards to hand! new:55 old52TEST FAILED!
+
+Didn't gain two more treasure cards to hand! new:36 old33TEST FAILED!
+
+Didn't gain two more treasure cards to hand! new:29 old26TEST FAILED!
+
+Didn't gain two more treasure cards to hand! new:43 old40TEST FAILED!
+
+Didn't gain two more treasure cards to hand! new:50 old47TEST FAILED!
+
+Obviously, we were gaining more treasures than we should be when playing this card.  I looked at the code, and I noticed that the loop
+where this was occuring had a '<=' instead of a '<', which was also verified to be the bug from a comment next to the change.
+
+I found the second bug in a similar fashion while running my random test for smithy code.  The output for this test was:
+
+ Testing Smithy.
+
+wrong number of cards in hand previous:51 now: 54
+
+Wrong deck count greater than 2 previous:190 now186
+TEST FAILED!
+
+wrong number of cards in hand previous:94 now: 97
+
+Wrong deck count greater than 2 previous:398 now394
+TEST FAILED!
+
+wrong number of cards in hand previous:430 now: 433
+
+Wrong deck count greater than 2 previous:296 now292
+TEST FAILED!
+
+wrong number of cards in hand previous:72 now: 75
+
+Wrong deck count greater than 2 previous:132 now128
+TEST FAILED!
+
+wrong number of cards in hand previous:462 now: 465
+
+Wrong deck count greater than 2 previous:417 now413TEST FAILED!
+
+This test was failing for two checks, one which indicated that we had more cards in our hand than we should, and a second check that
+was indicating that the deck had less cards in it than it should have.  Obviously, we were drawing one more card than we should have
+when this card was being played.  I checked the line in the code where this was occurring and found a similar bug to the previous one
+where a '<' was replaced by a '<=', and this was also verified by a comment in the code indicating that this was the bug.

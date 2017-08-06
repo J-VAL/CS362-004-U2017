@@ -1,0 +1,506 @@
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* -----------------------------------------------------------------------
+        -:    2: * CS362-004 Summer 2017 Assignment 3
+        -:    3: * unittest4.c
+        -:    4: * 
+        -:    5: * Patrick Kwong
+        -:    6: * kwongp@oregonstate.edu
+        -:    7: *
+        -:    8: * Unit test for dominion function: supplyCount
+        -:    9: * supplyCount returns the correct number in supply piles 
+        -:   10: * -----------------------------------------------------------------------
+        -:   11: * Include the following lines in the makefile:
+        -:   12: *
+        -:   13: * unittest4: unittest4.c dominion.o rngs.o
+        -:   14: *      gcc -o unittest4 -g unittest4.c dominion.o rngs.o $(CFLAGS)
+        -:   15: */
+        -:   16:
+        -:   17:#include "dominion.h"
+        -:   18:#include "dominion_helpers.h"
+        -:   19:#include "rngs.h"
+        -:   20:#include <string.h>
+        -:   21:#include <assert.h>
+        -:   22:#include <stdio.h>
+        -:   23:#include <stdlib.h>
+        -:   24:#include <time.h>
+        -:   25:#include <math.h>
+        -:   26:
+function main called 1 returned 100% blocks executed 73%
+        1:   27:int main() 
+        -:   28:{
+        -:   29:    int count, seed, expected, i;
+        1:   30:    int bugCount = 0;
+        1:   31:    int numPlayer = 2;
+        1:   32:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   33:               , remodel, smithy, village, baron, great_hall};
+        -:   34:    struct gameState G;
+        1:   35:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        -:   36: 
+        1:   37:    printf("Testing supplyCount function...\n");
+call    0 returned 100%
+        1:   38:    printf("Checking the supplyCount function returns correct number in supply\n");
+call    0 returned 100%
+        1:   39:    printf("------------------------------------------------------------------\n\n");
+call    0 returned 100%
+        -:   40:
+        4:   41:    for (i = 0; i < 3; i++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+        -:   42:    {
+        3:   43:        printf("Testing with %d players \n", numPlayer);
+call    0 returned 100%
+        3:   44:        printf("------------------------\n\n");
+call    0 returned 100%
+        -:   45:
+        3:   46:        memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        3:   47:        initializeGame(numPlayer, k, seed, &G); // initialize a new game
+call    0 returned 100%
+        -:   48:
+        -:   49:        // test number of supply piles after initializing game
+        3:   50:        count = supplyCount(adventurer, &G);
+call    0 returned 100%
+        3:   51:        printf ("supplyCount(adventurer, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:   52:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:   53:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:   54:        else{
+    #####:   55:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:   56:            bugCount++;
+        -:   57:        }
+        -:   58:
+        3:   59:        count = supplyCount(council_room, &G);
+call    0 returned 100%
+        3:   60:        printf ("supplyCount(council_room, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:   61:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:   62:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:   63:        else{
+    #####:   64:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:   65:            bugCount++;
+        -:   66:        }
+        -:   67:        
+        3:   68:        count = supplyCount(feast, &G);
+call    0 returned 100%
+        3:   69:        printf ("supplyCount(feast, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:   70:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:   71:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:   72:        else{
+    #####:   73:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:   74:            bugCount++;
+        -:   75:        }
+        -:   76:        
+        -:   77:        // rules = start supply for gardens 8 cards for 2 players, 12 for 3 or more players
+        3:   78:        count = supplyCount(gardens, &G);
+call    0 returned 100%
+        3:   79:        if(numPlayer == 2) 
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:   80:            expected = 8;
+        -:   81:        else
+        2:   82:            expected = 12;
+        3:   83:        printf ("supplyCount(gardens, &G) = %d, expected: %d\n", count, expected);
+call    0 returned 100%
+        3:   84:        if(count == expected)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:   85:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:   86:        else{
+    #####:   87:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:   88:            bugCount++;
+        -:   89:        }
+        -:   90:        
+        3:   91:        count = supplyCount(mine, &G);
+call    0 returned 100%
+        3:   92:        printf ("supplyCount(mine, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:   93:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:   94:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:   95:        else{
+    #####:   96:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:   97:            bugCount++;
+        -:   98:        }
+        -:   99:        
+        3:  100:        count = supplyCount(remodel, &G);
+call    0 returned 100%
+        3:  101:        printf ("supplyCount(remodel, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:  102:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  103:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  104:        else{
+    #####:  105:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  106:            bugCount++;
+        -:  107:        }
+        -:  108:        
+        3:  109:        count = supplyCount(smithy, &G);
+call    0 returned 100%
+        3:  110:        printf ("supplyCount(smithy, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:  111:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  112:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  113:        else{
+    #####:  114:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  115:            bugCount++;
+        -:  116:        }
+        -:  117:        
+        3:  118:        count = supplyCount(village, &G);
+call    0 returned 100%
+        3:  119:        printf ("supplyCount(village, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:  120:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  121:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  122:        else{
+    #####:  123:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  124:            bugCount++;
+        -:  125:        }
+        -:  126:        
+        3:  127:        count = supplyCount(baron, &G);
+call    0 returned 100%
+        3:  128:        printf ("supplyCount(baron, &G) = %d, expected: 10\n", count);
+call    0 returned 100%
+        3:  129:        if(count == 10)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  130:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  131:        else{
+    #####:  132:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  133:            bugCount++;
+        -:  134:        }
+        -:  135:        
+        -:  136:        // rules = start supply for great_hall 8 cards for 2 players, 12 for 3 or more players
+        3:  137:        count = supplyCount(great_hall, &G);
+call    0 returned 100%
+        3:  138:        if(numPlayer == 2) 
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:  139:            expected = 8;
+        -:  140:        else
+        2:  141:            expected = 12;
+        3:  142:        printf ("supplyCount(great_hall, &G) = %d, expected: %d\n", count, expected);
+call    0 returned 100%
+        3:  143:        if(count == expected)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  144:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  145:        else{
+    #####:  146:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  147:            bugCount++;
+        -:  148:        }
+        -:  149:
+        -:  150:        // rules = start supply for victory 8 cards for 2 players, 12 for 3 or more players
+        3:  151:        count = supplyCount(estate, &G);
+call    0 returned 100%
+        3:  152:        if(numPlayer == 2) 
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:  153:            expected = 8;
+        -:  154:        else
+        2:  155:            expected = 12;
+        3:  156:        printf ("supplyCount(estate, &G) = %d, expected: %d\n", count, expected);
+call    0 returned 100%
+        3:  157:        if(count == expected)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  158:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  159:        else{
+    #####:  160:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  161:            bugCount++;
+        -:  162:        }
+        -:  163:
+        -:  164:        // rules = start supply for victory 8 cards for 2 players, 12 for 3 or more players
+        3:  165:        count = supplyCount(duchy, &G);
+call    0 returned 100%
+        3:  166:        if(numPlayer == 2) 
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:  167:            expected = 8;
+        -:  168:        else
+        2:  169:            expected = 12;
+        3:  170:        printf ("supplyCount(duchy, &G) = %d, expected: %d\n", count, expected);
+call    0 returned 100%
+        3:  171:        if(count == expected)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  172:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  173:        else{
+    #####:  174:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  175:            bugCount++;
+        -:  176:        }
+        -:  177:
+        -:  178:        // rules = start supply for victory 8 cards for 2 players, 12 for 3 or more players
+        3:  179:        count = supplyCount(province, &G);
+call    0 returned 100%
+        3:  180:        if(numPlayer == 2) 
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:  181:            expected = 8;
+        -:  182:        else
+        2:  183:            expected = 12;
+        3:  184:        printf ("supplyCount(province, &G) = %d, expected: %d\n", count, expected);
+call    0 returned 100%
+        3:  185:        if(count == expected)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  186:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  187:        else{
+    #####:  188:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  189:            bugCount++;
+        -:  190:        }
+        -:  191:
+        -:  192:        // rules = start supply for curse 10 cards for 2 players, 20 for 3 players, 30 for 4 players
+        3:  193:        count = supplyCount(curse, &G);
+call    0 returned 100%
+        3:  194:        if(numPlayer == 2) 
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:  195:            expected = 10;
+        2:  196:        else if(numPlayer == 3) 
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        1:  197:            expected = 20;
+        -:  198:        else
+        1:  199:            expected = 30;
+        3:  200:        printf ("supplyCount(curse, &G) = %d, expected: %d\n", count, expected);
+call    0 returned 100%
+        3:  201:        if(count == expected)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  202:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  203:        else{
+    #####:  204:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  205:            bugCount++;
+        -:  206:        }
+        -:  207:
+        3:  208:        count = supplyCount(gold, &G);
+call    0 returned 100%
+        3:  209:        printf ("supplyCount(gold, &G) = %d, expected: 30\n", count);
+call    0 returned 100%
+        3:  210:        if(count == 30)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  211:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  212:        else{
+    #####:  213:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  214:            bugCount++;
+        -:  215:        }
+        -:  216:
+        3:  217:        count = supplyCount(silver, &G);
+call    0 returned 100%
+        3:  218:        printf ("supplyCount(silver, &G) = %d, expected: 40\n", count);
+call    0 returned 100%
+        3:  219:        if(count == 40)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  220:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  221:        else{
+    #####:  222:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  223:            bugCount++;
+        -:  224:        }
+        -:  225:
+        3:  226:        count = supplyCount(silver, &G);
+call    0 returned 100%
+        3:  227:        printf ("supplyCount(silver, &G) = %d, expected: 40\n", count);
+call    0 returned 100%
+        3:  228:        if(count == 40)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  229:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  230:        else{
+    #####:  231:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  232:            bugCount++;
+        -:  233:        }
+        -:  234:
+        -:  235:
+        -:  236:        // rules = start supply for coppers is whatever is leftover after giving 7 coppers to each player from 60 total coppers in gmae
+        3:  237:        count = supplyCount(copper, &G);
+call    0 returned 100%
+        3:  238:        expected = 60 - (7 * numPlayer);
+        3:  239:        printf ("supplyCount(copper, &G) = %d, expected: %d\n", count, expected);
+call    0 returned 100%
+        3:  240:        if(count == expected)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        3:  241:            printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  242:        else{
+    #####:  243:            printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  244:            bugCount++;
+        -:  245:        }
+        3:  246:        numPlayer++;
+        -:  247:        // dang i've pretty much tested the initializeGame...
+        -:  248:    }
+        -:  249:
+        -:  250:    // some tests with manual changes to supplyCount
+        1:  251:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  252:    initializeGame(numPlayer, k, seed, &G); // initialize a new game
+call    0 returned 100%
+        -:  253:
+        1:  254:    G.supplyCount[copper] = 5;
+        1:  255:    count = supplyCount(copper, &G);
+call    0 returned 100%
+        1:  256:    printf ("supplyCount(copper, &G) = %d, expected: 5\n", count);
+call    0 returned 100%
+        1:  257:    if(count == 5)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  258:        printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  259:    else{
+    #####:  260:        printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  261:        bugCount++;
+        -:  262:    }
+        -:  263:
+        1:  264:    G.supplyCount[silver] = 11;
+        1:  265:    count = supplyCount(silver, &G);
+call    0 returned 100%
+        1:  266:    printf ("supplyCount(silver, &G) = %d, expected: 11\n", count);
+call    0 returned 100%
+        1:  267:    if(count == 11)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  268:        printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  269:    else{
+    #####:  270:        printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  271:        bugCount++;
+        -:  272:    }
+        -:  273:
+        1:  274:    G.supplyCount[estate] = 3;
+        1:  275:    count = supplyCount(estate, &G);
+call    0 returned 100%
+        1:  276:    printf ("supplyCount(estate, &G) = %d, expected: 3\n", count);
+call    0 returned 100%
+        1:  277:    if(count == 3)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  278:        printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  279:    else{
+    #####:  280:        printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  281:        bugCount++;
+        -:  282:    }
+        -:  283:
+        1:  284:    G.supplyCount[adventurer] = 11;
+        1:  285:    count = supplyCount(adventurer, &G);
+call    0 returned 100%
+        1:  286:    printf ("supplyCount(adventurer, &G) = %d, expected: 11\n", count);
+call    0 returned 100%
+        1:  287:    if(count == 11)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  288:        printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  289:    else{
+    #####:  290:        printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  291:        bugCount++;
+        -:  292:    }
+        -:  293:
+        1:  294:    G.supplyCount[smithy] = 0;
+        1:  295:    count = supplyCount(smithy, &G);
+call    0 returned 100%
+        1:  296:    printf ("supplyCount(smithy, &G) = %d, expected: 0\n", count);
+call    0 returned 100%
+        1:  297:    if(count == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  298:        printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  299:    else{
+    #####:  300:        printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  301:        bugCount++;
+        -:  302:    }
+        -:  303:
+        -:  304:    // probably shouldn't be able to set supply to -1
+        1:  305:    G.supplyCount[curse] = -1;
+        1:  306:    count = supplyCount(curse, &G);
+call    0 returned 100%
+        1:  307:    printf ("supplyCount(curse, &G) = %d, expected: -1\n", count);
+call    0 returned 100%
+        1:  308:    if(count == -1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  309:        printf("Great! supplyCount function returned the correct supply count.\n\n");
+call    0 returned 100%
+        -:  310:    else{
+    #####:  311:        printf("BUG!!! supplyCount function returned the wrong supply count.\n\n");
+call    0 never executed
+    #####:  312:        bugCount++;
+        -:  313:    }
+        -:  314:    
+        -:  315:    // output the test results overall
+        1:  316:    printf("--------------------------------------------\n");
+call    0 returned 100%
+        1:  317:    printf("Final Testing results of supplyCount function\n");
+call    0 returned 100%
+        1:  318:    printf("-------------------------------------------\n");
+call    0 returned 100%
+        1:  319:    if(bugCount == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  320:        printf("All tests passed for the supplyCount function!\n\n");
+call    0 returned 100%
+        -:  321:    else
+    #####:  322:        printf("supplyCount returned wrong supply count for %d condition(s), check above for which ones.\n\n", bugCount);
+call    0 never executed
+        -:  323:    
+        1:  324:    return 0;
+        -:  325:}

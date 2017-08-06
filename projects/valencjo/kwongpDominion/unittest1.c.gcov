@@ -1,0 +1,677 @@
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* -----------------------------------------------------------------------
+        -:    2: * CS362-004 Summer 2017 Assignment 3
+        -:    3: * unittest1.c
+        -:    4: * 
+        -:    5: * Patrick Kwong
+        -:    6: * kwongp@oregonstate.edu
+        -:    7: *
+        -:    8: * Unit test for dominion function: getCost
+        -:    9: * getCost returns the value of the card
+        -:   10: * I checked the value from getCost against dominionstrategy.com
+        -:   11: * -----------------------------------------------------------------------
+        -:   12: * Include the following lines in the makefile:
+        -:   13: *
+        -:   14: * unittest1: unittest1.c dominion.o rngs.o
+        -:   15: *      gcc -o unittest1 -g  unittest1.c dominion.o rngs.o $(CFLAGS)
+        -:   16: */
+        -:   17:
+        -:   18:#include "dominion.h"
+        -:   19:#include "dominion_helpers.h"
+        -:   20:#include <stdio.h>
+        -:   21:#include <stdlib.h>
+        -:   22:
+        -:   23:// testResult
+        -:   24:// checks if the provided testCost from getCost against the provide correct
+        -:   25:// returns 1 if getCost's cost doesn't make cost from rules
+        -:   26:// return 0 if getCost's cost does make cost from rules
+function testResult called 27 returned 100% blocks executed 67%
+       27:   27:int testResult(int testCost, int correctCost)
+        -:   28:{
+       27:   29:    if(testCost != correctCost)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   30:    {
+    #####:   31:        printf("BUG!!! The cost from getCost function did not match the cost from rules.\n\n");
+call    0 never executed
+    #####:   32:        return 1;
+        -:   33:    }
+        -:   34:    else
+       27:   35:        printf("Great! The cost from getCost function matched the cost from rules.\n\n");
+call    0 returned 100%
+       27:   36:        return 0;
+        -:   37:}
+        -:   38:
+function main called 1 returned 100% blocks executed 88%
+        1:   39:int main() 
+        -:   40:{
+        -:   41:    int testCost, correctCost;
+        1:   42:    int bugCount = 0;
+        -:   43:
+        1:   44:    printf("Testing getCost function...\n");
+call    0 returned 100%
+        1:   45:    printf("Checking the costs from getCost function in dominion.c against\n");
+call    0 returned 100%
+        1:   46:    printf("the costs at http://wiki.dominionstrategy.com/index.php/List_of_cards\n");
+call    0 returned 100%
+        1:   47:    printf("---------------------------------------------------------------------\n\n");
+call    0 returned 100%
+        -:   48:
+        -:   49:    // curse card
+        1:   50:    testCost = getCost(curse);
+call    0 returned 100%
+        1:   51:    correctCost = 0;
+        1:   52:    printf("Testing curse:\n");
+call    0 returned 100%
+        1:   53:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   54:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:   55:    else
+        -:   56:    {    
+        1:   57:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:   58:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:   59:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:   60:    }
+        -:   61:
+        -:   62:    // estate card
+        1:   63:    testCost = getCost(estate);
+call    0 returned 100%
+        1:   64:    correctCost = 2;
+        1:   65:    printf("Testing estate:\n");
+call    0 returned 100%
+        1:   66:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   67:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:   68:    else
+        -:   69:    {  
+        1:   70:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:   71:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:   72:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:   73:    }
+        -:   74:
+        -:   75:    // duchy card
+        1:   76:    testCost = getCost(duchy);
+call    0 returned 100%
+        1:   77:    correctCost = 5;
+        1:   78:    printf("Testing duchy:\n");
+call    0 returned 100%
+        1:   79:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   80:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:   81:    else
+        -:   82:    {  
+        1:   83:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:   84:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:   85:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:   86:    }
+        -:   87:
+        -:   88:    // province card
+        1:   89:    testCost = getCost(province);
+call    0 returned 100%
+        1:   90:    correctCost = 8;
+        1:   91:    printf("Testing province:\n");
+call    0 returned 100%
+        1:   92:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   93:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:   94:    else
+        -:   95:    {  
+        1:   96:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:   97:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:   98:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:   99:    }
+        -:  100:
+        -:  101:    // copper card
+        1:  102:    testCost = getCost(copper);
+call    0 returned 100%
+        1:  103:    correctCost = 0;
+        1:  104:    printf("Testing copper:\n");
+call    0 returned 100%
+        1:  105:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  106:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  107:    else
+        -:  108:    {  
+        1:  109:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  110:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  111:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  112:    }
+        -:  113:
+        -:  114:    // silver card
+        1:  115:    testCost = getCost(silver);
+call    0 returned 100%
+        1:  116:    correctCost = 3;
+        1:  117:    printf("Testing silver:\n");
+call    0 returned 100%
+        1:  118:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  119:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  120:    else
+        -:  121:    {  
+        1:  122:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  123:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  124:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  125:    }
+        -:  126:
+        -:  127:    // gold card
+        1:  128:    testCost = getCost(gold);
+call    0 returned 100%
+        1:  129:    correctCost = 6;
+        1:  130:    printf("Testing gold:\n");
+call    0 returned 100%
+        1:  131:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  132:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  133:    else
+        -:  134:    {  
+        1:  135:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  136:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  137:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  138:    }
+        -:  139:
+        -:  140:    // adventurer card
+        1:  141:    testCost = getCost(adventurer);
+call    0 returned 100%
+        1:  142:    correctCost = 6;
+        1:  143:    printf("Testing adventurer:\n");
+call    0 returned 100%
+        1:  144:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  145:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  146:    else
+        -:  147:    {  
+        1:  148:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  149:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  150:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  151:    }
+        -:  152:
+        -:  153:    // council_room card
+        1:  154:    testCost = getCost(council_room);
+call    0 returned 100%
+        1:  155:    correctCost = 5;
+        1:  156:    printf("Testing council_room:\n");
+call    0 returned 100%
+        1:  157:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  158:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  159:    else
+        -:  160:    {  
+        1:  161:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  162:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  163:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  164:    }
+        -:  165:
+        -:  166:    // feast card
+        1:  167:    testCost = getCost(feast);
+call    0 returned 100%
+        1:  168:    correctCost = 4;
+        1:  169:    printf("Testing feast:\n");
+call    0 returned 100%
+        1:  170:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  171:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  172:    else
+        -:  173:    {  
+        1:  174:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  175:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  176:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  177:    }
+        -:  178:
+        -:  179:    // gardens card
+        1:  180:    testCost = getCost(gardens);
+call    0 returned 100%
+        1:  181:    correctCost = 4;
+        1:  182:    printf("Testing gardens:\n");
+call    0 returned 100%
+        1:  183:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  184:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  185:    else
+        -:  186:    {  
+        1:  187:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  188:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  189:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  190:    }
+        -:  191:
+        -:  192:    // mine card
+        1:  193:    testCost = getCost(mine);
+call    0 returned 100%
+        1:  194:    correctCost = 5;
+        1:  195:    printf("Testing mine:\n");
+call    0 returned 100%
+        1:  196:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  197:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  198:    else
+        -:  199:    {  
+        1:  200:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  201:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  202:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  203:    }
+        -:  204:
+        -:  205:    // remodel card
+        1:  206:    testCost = getCost(remodel);
+call    0 returned 100%
+        1:  207:    correctCost = 4;
+        1:  208:    printf("Testing remodel:\n");
+call    0 returned 100%
+        1:  209:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  210:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  211:    else
+        -:  212:    {  
+        1:  213:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  214:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  215:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  216:    }
+        -:  217:
+        -:  218:    // smithy card
+        1:  219:    testCost = getCost(smithy);
+call    0 returned 100%
+        1:  220:    correctCost = 4;
+        1:  221:    printf("Testing smithy:\n");
+call    0 returned 100%
+        1:  222:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  223:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  224:    else
+        -:  225:    {  
+        1:  226:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  227:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  228:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  229:    }
+        -:  230:
+        -:  231:    // village card
+        1:  232:    testCost = getCost(village);
+call    0 returned 100%
+        1:  233:    correctCost = 3;
+        1:  234:    printf("Testing village:\n");
+call    0 returned 100%
+        1:  235:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  236:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  237:    else
+        -:  238:    {  
+        1:  239:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  240:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  241:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  242:    }
+        -:  243:
+        -:  244:    // baron card
+        1:  245:    testCost = getCost(baron);
+call    0 returned 100%
+        1:  246:    correctCost = 4;
+        1:  247:    printf("Testing baron:\n");
+call    0 returned 100%
+        1:  248:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  249:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  250:    else
+        -:  251:    {  
+        1:  252:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  253:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  254:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  255:    }
+        -:  256:
+        -:  257:    // great_hall card
+        1:  258:    testCost = getCost(great_hall);
+call    0 returned 100%
+        1:  259:    correctCost = 3;
+        1:  260:    printf("Testing great_hall:\n");
+call    0 returned 100%
+        1:  261:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  262:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  263:    else
+        -:  264:    {  
+        1:  265:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  266:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  267:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  268:    }
+        -:  269:
+        -:  270:    // minion card
+        1:  271:    testCost = getCost(minion);
+call    0 returned 100%
+        1:  272:    correctCost = 5;
+        1:  273:    printf("Testing minion:\n");
+call    0 returned 100%
+        1:  274:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  275:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  276:    else
+        -:  277:    {  
+        1:  278:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  279:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  280:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  281:    }
+        -:  282:
+        -:  283:    // steward card
+        1:  284:    testCost = getCost(steward);
+call    0 returned 100%
+        1:  285:    correctCost = 3;
+        1:  286:    printf("Testing steward:\n");
+call    0 returned 100%
+        1:  287:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  288:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  289:    else
+        -:  290:    {  
+        1:  291:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  292:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  293:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  294:    }
+        -:  295:
+        -:  296:    // tribute card
+        1:  297:    testCost = getCost(tribute);
+call    0 returned 100%
+        1:  298:    correctCost = 5;
+        1:  299:    printf("Testing tribute:\n");
+call    0 returned 100%
+        1:  300:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  301:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  302:    else
+        -:  303:    {  
+        1:  304:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  305:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  306:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  307:    }
+        -:  308:
+        -:  309:    // ambassador card
+        1:  310:    testCost = getCost(ambassador);
+call    0 returned 100%
+        1:  311:    correctCost = 3;
+        1:  312:    printf("Testing ambassador:\n");
+call    0 returned 100%
+        1:  313:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  314:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  315:    else
+        -:  316:    {  
+        1:  317:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  318:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  319:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  320:    }
+        -:  321:
+        -:  322:    // cutpurse card
+        1:  323:    testCost = getCost(cutpurse);
+call    0 returned 100%
+        1:  324:    correctCost = 4;
+        1:  325:    printf("Testing cutpurse:\n");
+call    0 returned 100%
+        1:  326:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  327:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  328:    else
+        -:  329:    {  
+        1:  330:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  331:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  332:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  333:    }
+        -:  334:
+        -:  335:    // embargo card
+        1:  336:    testCost = getCost(embargo);
+call    0 returned 100%
+        1:  337:    correctCost = 2;
+        1:  338:    printf("Testing embargo:\n");
+call    0 returned 100%
+        1:  339:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  340:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  341:    else
+        -:  342:    {  
+        1:  343:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  344:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  345:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  346:    }
+        -:  347:
+        -:  348:    // outpost card
+        1:  349:    testCost = getCost(outpost);
+call    0 returned 100%
+        1:  350:    correctCost = 5;
+        1:  351:    printf("Testing outpost:\n");
+call    0 returned 100%
+        1:  352:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  353:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  354:    else
+        -:  355:    {  
+        1:  356:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  357:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  358:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  359:    }
+        -:  360:
+        -:  361:    // salvager card
+        1:  362:    testCost = getCost(salvager);
+call    0 returned 100%
+        1:  363:    correctCost = 4;
+        1:  364:    printf("Testing salvager:\n");
+call    0 returned 100%
+        1:  365:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  366:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  367:    else
+        -:  368:    {  
+        1:  369:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  370:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  371:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  372:    }
+        -:  373:
+        -:  374:    // sea_hag card
+        1:  375:    testCost = getCost(sea_hag);
+call    0 returned 100%
+        1:  376:    correctCost = 4;
+        1:  377:    printf("Testing sea_hag:\n");
+call    0 returned 100%
+        1:  378:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  379:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  380:    else
+        -:  381:    {  
+        1:  382:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  383:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  384:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  385:    }
+        -:  386:
+        -:  387:    // treasure_map card
+        1:  388:    testCost = getCost(treasure_map);
+call    0 returned 100%
+        1:  389:    correctCost = 4;
+        1:  390:    printf("Testing treasure_map:\n");
+call    0 returned 100%
+        1:  391:    if(testCost < 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  392:        printf("getCost failed to provide cost for this card.\n");
+call    0 never executed
+        -:  393:    else
+        -:  394:    {  
+        1:  395:        printf("Cost from getCost function: %d coins\n",testCost);
+call    0 returned 100%
+        1:  396:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+call    0 returned 100%
+        1:  397:        bugCount += testResult(testCost, correctCost);
+call    0 returned 100%
+        -:  398:    }
+        -:  399:
+        -:  400:    // market card - why isn't this base card in the dominion.c?
+        -:  401:    /*
+        -:  402:    testCost = getCost(market);
+        -:  403:    correctCost = 5;
+        -:  404:    printf("Testing market:\n");
+        -:  405:    if(testCost < 0)
+        -:  406:        printf("getCost failed to provide cost for this card.\n");
+        -:  407:    else
+        -:  408:    {
+        -:  409:        printf("Cost from getCost function: %d coins\n",testCost);
+        -:  410:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+        -:  411:        bugCount += testResult(testCost, correctCost);        
+        -:  412:    }
+        -:  413:
+        -:  414:    // militia card - why isn't this base card in the dominion.c?
+        -:  415:    testCost = getCost(militia);
+        -:  416:    correctCost = 2;
+        -:  417:    printf("Testing militia:\n");
+        -:  418:    if(testCost < 0)
+        -:  419:        printf("getCost failed to provide cost for this card.\n");
+        -:  420:    else
+        -:  421:    {
+        -:  422:        printf("Cost from getCost function: %d coins\n",testCost);
+        -:  423:        printf("Cost from dominionstrategy: %d coins\n",correctCost);
+        -:  424:        bugCount += testResult(testCost, correctCost);        
+        -:  425:    }
+        -:  426:    */
+        -:  427:
+        -:  428:
+        -:  429:    // output the test results overall
+        1:  430:    printf("-----------------------------------------\n");
+call    0 returned 100%
+        1:  431:    printf("Final Testing results of getCost function\n");
+call    0 returned 100%
+        1:  432:    printf("-----------------------------------------\n");
+call    0 returned 100%
+        1:  433:    if(bugCount == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  434:        printf("All tests passed for the getCost function!\n\n");
+call    0 returned 100%
+        -:  435:    else
+    #####:  436:        printf("getCost failed to get correct cost for %d cards(s), check above for which ones.\n\n", bugCount);
+call    0 never executed
+        -:  437:    
+        1:  438:    return 0;
+        -:  439:}

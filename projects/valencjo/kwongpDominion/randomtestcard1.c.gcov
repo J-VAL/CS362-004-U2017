@@ -1,0 +1,368 @@
+        -:    0:Source:randomtestcard1.c
+        -:    0:Graph:randomtestcard1.gcno
+        -:    0:Data:randomtestcard1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* -----------------------------------------------------------------------
+        -:    2: * CS362-004 Summer 2017 Assignment 4
+        -:    3: * randomtestcard1.c
+        -:    4: * 
+        -:    5: * Patrick Kwong
+        -:    6: * kwongp@oregonstate.edu
+        -:    7: *
+        -:    8: * Random test generator for Smithy 
+        -:    9: * - draws 3 cards
+        -:   10: *
+        -:   11: * Used provided cardtest4.c, dominion.c, and testUpdateCoins.c provided code
+        -:   12: * -----------------------------------------------------------------------
+        -:   13: * Include the following lines in the makefile:
+        -:   14: *
+        -:   15: * randomtestcard1: randomtestcard1.c dominion.o rngs.o
+        -:   16: *      gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+        -:   17: */
+        -:   18:
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include <string.h>
+        -:   22:#include <stdio.h>
+        -:   23:#include <assert.h>
+        -:   24:#include "rngs.h"
+        -:   25:#include <stdlib.h>
+        -:   26:#include <time.h>
+        -:   27:#include <math.h>
+        -:   28:#include <stdbool.h>
+        -:   29:
+        -:   30:#define TEST_RUNS 1000
+        -:   31:
+function main called 1 returned 100% blocks executed 90%
+        1:   32:int main() {
+        -:   33:    int i, j, r, z;
+        -:   34:    int numPlayer;
+        1:   35:    int bugCount = 0;
+        1:   36:    int flag = 0; // flag for other player piles
+        -:   37:	struct gameState G, prevG;
+        1:   38:	int seed = 1000;
+        1:   39:	srand(time(NULL));
+call    0 returned 100%
+call    1 returned 100%
+        -:   40:	int k[10]; // for kingdom cards
+        -:   41:	int numKingdomCards;
+        -:   42:	bool haveCard;
+        -:   43:	int numDraw;
+        1:   44:	int pass = 0; // track the number of passes
+        1:   45:	int fail = 0; // track the number of fails
+        -:   46:
+        1:   47:	printf("------------------------------------------\n");		
+call    0 returned 100%
+        1:   48:	printf(" Testing Random Test Generator for Smithy\n");
+call    0 returned 100%
+        1:   49:	printf("------------------------------------------\n");	
+call    0 returned 100%
+        -:   50:    
+     1001:   51:	for(z = 1; z <= TEST_RUNS; z++) // test for loop
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:   52:	{
+        -:   53:		// random kingdom cards set (9 random with smithy card)
+     1000:   54:		numKingdomCards = 0;
+    15377:   55:		while(numKingdomCards < 10)
+branch  0 taken 93%
+branch  1 taken 7% (fallthrough)
+        -:   56:		{
+    13377:   57:			haveCard = false;
+    13377:   58:			r = (rand() % 20 + 7); // gets a random kingdom card
+call    0 returned 100%
+        -:   59:			
+        -:   60:			// check if already have card in kingdom set k
+    81077:   61:			for(i = 0; i < numKingdomCards; i++)
+branch  0 taken 84%
+branch  1 taken 16% (fallthrough)
+    67700:   62:				if(k[i] == r)
+branch  0 taken 5% (fallthrough)
+branch  1 taken 95%
+     3377:   63:					haveCard = true;
+        -:   64:			
+        -:   65:			// if we don't have it, add it to k set and increment the numKingdomCards
+    13377:   66:			if(!haveCard)
+branch  0 taken 75% (fallthrough)
+branch  1 taken 25%
+        -:   67:			{
+    10000:   68:				k[numKingdomCards] = r;
+    10000:   69:				numKingdomCards++;
+        -:   70:			}
+        -:   71:		}
+        -:   72:		// now with random set, we have to make sure smithy card is in the kingdom pile
+        -:   73:		// if not we'll randomly replace one of the 10 kindgom cards with an smithy.
+     1000:   74:		haveCard = false;
+        -:   75:		// check 10 kingdom pile for smithy
+    11000:   76:		for(i = 0; i < 10; i++)
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+        -:   77:		{
+    10000:   78:			if(k[i] == smithy)
+branch  0 taken 5% (fallthrough)
+branch  1 taken 95%
+        -:   79:			{
+      483:   80:				haveCard = true;
+        -:   81:			}
+        -:   82:		}
+        -:   83:		// no smithy found, have to randomly add it.
+     1000:   84:		if(!haveCard)
+branch  0 taken 52% (fallthrough)
+branch  1 taken 48%
+        -:   85:		{
+      517:   86:			r = (rand() % 10); // random position
+call    0 returned 100%
+      517:   87:			k[r] = smithy;
+        -:   88:		}
+        -:   89:		
+        -:   90:		// random number of players from 2 to 5
+     1000:   91:		numPlayer = ((rand() % 3) + 2);
+call    0 returned 100%
+        -:   92:		
+     1000:   93:		printf("--------------------------------\n");
+call    0 returned 100%
+     1000:   94:		printf(" Starting Test #%d for Smithy\n", z);
+call    0 returned 100%
+     1000:   95:		printf("--------------------------------\n");
+call    0 returned 100%
+        -:   96:		
+     1000:   97:		memset(&G, 23, sizeof(struct gameState));   // clear the game state
+     1000:   98:		initializeGame(numPlayer, k, seed, &G); // initialize a new game
+call    0 returned 100%
+        -:   99:		
+        -:  100:		// set random deck count for each player
+     4035:  101:		for(i = 0; i < numPlayer; i++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+     3035:  102:			G.deckCount[i] = (rand() % (MAX_DECK/numPlayer));
+call    0 returned 100%
+        -:  103:		
+        -:  104:		// fill each players' decks with random cards
+     4035:  105:		for(i = 0; i < numPlayer; i++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+        -:  106:		{
+   251136:  107:			for(j = 0; j < G.deckCount[i]; j++) 
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:  108:			{
+   248101:  109:				r = rand() % 3;
+call    0 returned 100%
+   248101:  110:				switch(r) 
+branch  0 taken 33%
+branch  1 taken 33%
+branch  2 taken 33%
+branch  3 taken 0%
+        -:  111:				{
+    82589:  112:					case 0: G.deck[i][j] = (rand() % 4); // victory card 
+call    0 returned 100%
+    82589:  113:						break;
+    82467:  114:					case 1: G.deck[i][j] = (rand() % 3) + 4; // treasuer card 
+call    0 returned 100%
+    82467:  115:						break;
+    83045:  116:					case 2: G.deck[i][j] = k[(rand() % 10)]; // kingdom card 
+call    0 returned 100%
+    83045:  117:						break;
+        -:  118:				}
+        -:  119:			}
+        -:  120:		}
+        -:  121:		
+        -:  122:		// initialize counters
+     1000:  123:		bugCount = 0;
+        -:  124:		
+     1000:  125:		memcpy(&prevG, &G, sizeof(struct gameState)); //create clone of game state to run tests on
+     1000:  126:		smithy_func(G.handCount[0],&G);
+call    0 returned 100%
+        -:  127:		
+        -:  128:		/* tried cardEffect instead of my refactored function
+        -:  129:		int handPos, choice1, choice2, choice3, bonus;
+        -:  130:		choice1 = choice2 = choice3 = bonus = 0;
+        -:  131:		
+        -:  132:		// find hand position of smithy card
+        -:  133:		for(i = 0; i < G.handCount[0]; i++)
+        -:  134:		{
+        -:  135:			if(G.hand[0][i] == smithy)
+        -:  136:			{
+        -:  137:				handPos = i;
+        -:  138:			}
+        -:  139:		}
+        -:  140:		
+        -:  141:		cardEffect(smithy, choice1, choice2, choice3, &G, handPos, &bonus);
+        -:  142:		*/
+        -:  143:		// printf("Deck Count: %d\n", G.deckCount[0]);
+        -:  144:		/* check that deck, discard, hand contents are random
+        -:  145:		printf("Deck Contents\n");
+        -:  146:		for(i = 0; i < G.deckCount[0]; i++)
+        -:  147:			printf("Position %d, Card: %d\n", i, G.deck[0][i]);
+        -:  148:		
+        -:  149:		printf("Discard Contents\n");
+        -:  150:		for(i = 0; i < G.discardCount[0]; i++)
+        -:  151:			printf("Position %d, Card: %d\n", i, G.discard[0][i]);
+        -:  152:
+        -:  153:		printf("Hand Contents\n");
+        -:  154:		for(i = 0; i < G.handCount[0]; i++)
+        -:  155:			printf("Position %d, Card: %d\n", i, G.hand[0][i]);
+        -:  156:		*/
+        -:  157:		
+     1000:  158:		printf("Deck Count before Smithy: %d\n", prevG.deckCount[0]);
+call    0 returned 100%
+     1000:  159:		printf("Deck Count after Smithy: %d\n", G.deckCount[0]);
+call    0 returned 100%
+        -:  160:		
+        -:  161:		// if there are less than 3 cards, smithy can only draw what is available
+        -:  162:		// figure out how much should be drawn
+     1000:  163:		numDraw = 3;
+        -:  164:		
+     1000:  165:		if (prevG.deckCount[0] < 3)		
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+       16:  166:			numDraw = prevG.deckCount[0] - G.deckCount[0];
+        -:  167:		
+        -:  168:		// check if hand count correct after Smithy 
+     1000:  169:		printf("\nChecking hand count is correct after using refactored Smithy.\n");
+call    0 returned 100%
+     1000:  170:		printf("Previous hand count: %d, After Smithy: %d\n", prevG.handCount[0], G.handCount[0]);
+call    0 returned 100%
+     1000:  171:		printf("Expected hand count after Smithy: %d\n", (prevG.handCount[0] + numDraw - 1));
+call    0 returned 100%
+     1000:  172:		if((prevG.handCount[0] + numDraw - 1) != G.handCount[0]){
+branch  0 taken 98% (fallthrough)
+branch  1 taken 2%
+      977:  173:			printf("Bug!!! Ended with the incorrect number of cards in hand after Smithy.\n");
+call    0 returned 100%
+      977:  174:			bugCount++;
+        -:  175:		}
+        -:  176:		else
+       23:  177:			printf("Great! Ended with the correct number of cards in hand after Smithy.\n");
+call    0 returned 100%
+        -:  178:
+        -:  179:		// check if Smithy drew the correct cards from deck
+     1000:  180:		printf("\nChecking if refactored Smithy drew enough cards to hand.\n");
+call    0 returned 100%
+     1000:  181:		printf("Previous deck count: %d, After Smithy: %d\n", prevG.deckCount[0], G.deckCount[0]);
+call    0 returned 100%
+     1000:  182:		printf("Smithy drew: %d cards. Expected to draw %d cards.\n", (prevG.deckCount[0] - G.deckCount[0]), numDraw);
+call    0 returned 100%
+     1000:  183:		if((prevG.deckCount[0] - G.deckCount[0]) != numDraw){
+branch  0 taken 98% (fallthrough)
+branch  1 taken 2%
+      977:  184:			printf("Bug!!! Smithy didn't draw correct nunmber of cards from the deck.\n");
+call    0 returned 100%
+      977:  185:			bugCount++;
+        -:  186:		}
+        -:  187:		else
+       23:  188:			printf("Great! Smithy drew correct number of cards from deck.\n");
+call    0 returned 100%
+        -:  189:
+        -:  190:		// check if smithy altered other player's cards
+     1000:  191:		printf("\nChecking if refactored Smithy altered other player's hand.\n");
+call    0 returned 100%
+     1000:  192:		if(prevG.handCount[1] != G.handCount[1]){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  193:			printf("Bug!!! Smithy altered other player's cards\n");
+call    0 never executed
+    #####:  194:			bugCount++;
+        -:  195:		}
+     1000:  196:		else if(prevG.deckCount[1] != G.deckCount[1]){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  197:			printf("Bug!!! Smithy altered other player's cards\n");
+call    0 never executed
+    #####:  198:			bugCount++;
+        -:  199:		}
+     1000:  200:		else if(prevG.discardCount[1] != G.discardCount[1]){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  201:			printf("Bug!!! Smithy altered other player's cards\n");
+call    0 never executed
+    #####:  202:			bugCount++;
+        -:  203:		}
+        -:  204:		else
+     1000:  205:			printf("Great! Smithy didn't alter other player's cards.\n");
+call    0 returned 100%
+        -:  206:		
+        -:  207:		// check if Smithy altered the victory and kingdom piles
+     1000:  208:		printf("\nChecking if refactored Smithy altered the Victory and Kingdom piles.\n");
+call    0 returned 100%
+     1000:  209:		int arraySize = sizeof(G.supplyCount) / sizeof(int);
+    28000:  210:		for(i = 0; i < arraySize; i++){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+    27000:  211:			if(G.supplyCount[i] != prevG.supplyCount[i]){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  212:				flag = 1;
+        -:  213:			}
+        -:  214:		}
+     1000:  215:		if(flag == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+     1000:  216:			printf("Great! Smithy didn't alter the Victory and Kingdom piles.\n");
+call    0 returned 100%
+        -:  217:		else
+        -:  218:		{
+    #####:  219:			printf("Bug!!! Kingdom/Victory supplied have been altered\n");
+call    0 never executed
+    #####:  220:			bugCount++;
+        -:  221:		}
+        -:  222:
+        -:  223:		// output the test results overall
+     1000:  224:		printf("------------------------------------------\n");
+call    0 returned 100%
+     1000:  225:		printf(" Test #%d results for Smithy\n", z);
+call    0 returned 100%
+     1000:  226:		printf("------------------------------------------\n");
+call    0 returned 100%
+        -:  227:
+     1000:  228:		if(bugCount == 0)
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+        -:  229:		{
+       23:  230:			printf("All tests passed for the Smithy!\n\n");
+call    0 returned 100%
+       23:  231:			pass++;
+        -:  232:		}
+        -:  233:		else
+        -:  234:		{
+      977:  235:			printf("Smithy failed for %d condition(s), check above for which ones.\n\n", bugCount);
+call    0 returned 100%
+      977:  236:			fail++;
+        -:  237:		}
+        -:  238:		
+        -:  239:		/* checking deck, discard, hand contents
+        -:  240:		printf("Deck Contents\n");
+        -:  241:		for(i = 0; i < G.deckCount[0]; i++)
+        -:  242:			printf("Position %d, Card: %d\n", i, G.deck[0][i]);
+        -:  243:		
+        -:  244:		printf("Discard Contents\n");
+        -:  245:		for(i = 0; i < G.discardCount[0]; i++)
+        -:  246:			printf("Position %d, Card: %d\n", i, G.discard[0][i]);
+        -:  247:
+        -:  248:		printf("Hand Contents\n");
+        -:  249:		for(i = 0; i < G.handCount[0]; i++)
+        -:  250:			printf("Position %d, Card: %d\n", i, G.hand[0][i]);
+        -:  251:		*/
+        -:  252:		
+        -:  253:	}
+        -:  254:	
+        -:  255:	// output the final test results overall
+        1:  256:	printf("---------------------------------------------------\n");
+call    0 returned 100%
+        1:  257:	printf(" Final Testing results for Smithy\n");
+call    0 returned 100%
+        1:  258:	printf("---------------------------------------------------\n");
+call    0 returned 100%
+        -:  259:
+        1:  260:	if(fail == 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  261:		printf("All tests passed for the Smithy! Amazing!\n\n");
+call    0 never executed
+        -:  262:	else
+        1:  263:		printf("Smithy passed %d tests and failed %d tests, check above for which ones.\n\n", pass, fail);
+call    0 returned 100%
+        -:  264:		
+        1:  265:	return 0;
+        -:  266:}

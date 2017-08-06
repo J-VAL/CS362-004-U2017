@@ -1,0 +1,87 @@
+        -:    0:Source:testUpdateCoins.c
+        -:    0:Graph:testUpdateCoins.gcno
+        -:    0:Data:testUpdateCoins.gcda
+        -:    0:Runs:6
+        -:    0:Programs:1
+        -:    1:/* -----------------------------------------------------------------------
+        -:    2: * Demonstration of how to write unit tests for dominion-base
+        -:    3: * Include the following lines in your makefile:
+        -:    4: *
+        -:    5: * testUpdateCoins: testUpdateCoins.c dominion.o rngs.o
+        -:    6: *      gcc -o testUpdateCoins -g  testUpdateCoins.c dominion.o rngs.o $(CFLAGS)
+        -:    7: * -----------------------------------------------------------------------
+        -:    8: */
+        -:    9:
+        -:   10:#include "dominion.h"
+        -:   11:#include "dominion_helpers.h"
+        -:   12:#include <string.h>
+        -:   13:#include <stdio.h>
+        -:   14:#include <assert.h>
+        -:   15:#include "rngs.h"
+        -:   16:
+        -:   17:// set NOISY_TEST to 0 to remove printfs from output
+        -:   18:#define NOISY_TEST 1
+        -:   19:
+        6:   20:int main() {
+        -:   21:    int i;
+        6:   22:    int seed = 1000;
+        6:   23:    int numPlayer = 2;
+        6:   24:    int maxBonus = 10;
+        -:   25:    int p, r, handCount;
+        -:   26:    int bonus;
+        6:   27:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   28:               , remodel, smithy, village, baron, great_hall};
+        -:   29:    struct gameState G;
+        6:   30:    int maxHandCount = 5;
+        -:   31:    // arrays of all coppers, silvers, and golds
+        -:   32:    int coppers[MAX_HAND];
+        -:   33:    int silvers[MAX_HAND];
+        -:   34:    int golds[MAX_HAND];
+     3006:   35:    for (i = 0; i < MAX_HAND; i++)
+        -:   36:    {
+     3000:   37:        coppers[i] = copper;
+     3000:   38:        silvers[i] = silver;
+     3000:   39:        golds[i] = gold;
+        -:   40:    }
+        -:   41:
+        6:   42:    printf ("TESTING updateCoins():\n");
+       18:   43:    for (p = 0; p < numPlayer; p++)
+        -:   44:    {
+       72:   45:        for (handCount = 1; handCount <= maxHandCount; handCount++)
+        -:   46:        {
+      720:   47:            for (bonus = 0; bonus <= maxBonus; bonus++)
+        -:   48:            {
+        -:   49:#if (NOISY_TEST == 1)
+      660:   50:                printf("Test player %d with %d treasure card(s) and %d bonus.\n", p, handCount, bonus);
+        -:   51:#endif
+      660:   52:                memset(&G, 23, sizeof(struct gameState));   // clear the game state
+      660:   53:                r = initializeGame(numPlayer, k, seed, &G); // initialize a new game
+      660:   54:                G.handCount[p] = handCount;                 // set the number of cards on hand
+      660:   55:                memcpy(G.hand[p], coppers, sizeof(int) * handCount); // set all the cards to copper
+      660:   56:                updateCoins(p, &G, bonus);
+        -:   57:#if (NOISY_TEST == 1)
+      660:   58:                printf("G.coins = %d, expected = %d\n", G.coins, handCount * 1 + bonus);
+        -:   59:#endif
+      660:   60:                assert(G.coins == handCount * 1 + bonus); // check if the number of coins is correct
+        -:   61:
+      660:   62:                memcpy(G.hand[p], silvers, sizeof(int) * handCount); // set all the cards to silver
+      660:   63:                updateCoins(p, &G, bonus);
+        -:   64:#if (NOISY_TEST == 1)
+      660:   65:                printf("G.coins = %d, expected = %d\n", G.coins, handCount * 2 + bonus);
+        -:   66:#endif
+      660:   67:                assert(G.coins == handCount * 2 + bonus); // check if the number of coins is correct
+        -:   68:
+      660:   69:                memcpy(G.hand[p], golds, sizeof(int) * handCount); // set all the cards to gold
+      660:   70:                updateCoins(p, &G, bonus);
+        -:   71:#if (NOISY_TEST == 1)
+      660:   72:                printf("G.coins = %d, expected = %d\n", G.coins, handCount * 3 + bonus);
+        -:   73:#endif
+      660:   74:                assert(G.coins == handCount * 3 + bonus); // check if the number of coins is correct
+        -:   75:            }
+        -:   76:        }
+        -:   77:    }
+        -:   78:
+        6:   79:    printf("All tests passed!\n");
+        -:   80:
+        6:   81:    return 0;
+        -:   82:}

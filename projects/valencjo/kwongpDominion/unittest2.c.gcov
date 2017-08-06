@@ -1,0 +1,347 @@
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* -----------------------------------------------------------------------
+        -:    2: * CS362-004 Summer 2017 Assignment 3
+        -:    3: * unittest2.c
+        -:    4: * 
+        -:    5: * Unit test for dominion function: isGameOver
+        -:    6: * isGameOver checks the number of provinces or if three supply piles are 
+        -:    7: * empty to determine if the game is over.
+        -:    8: * it returns 1 if game is over or a 0 if game is not over
+        -:    9: * http://wiki.dominionstrategy.com/index.php/Endgame
+        -:   10: * game over when any of following are true:
+        -:   11: * - province pile is empty
+        -:   12: * - three of the supply piles run out (for 2 to 4 players, 4 piles if there are 5+ players) 
+        -:   13: *    (kingdom cards, treasures cards, victory cards, curse cards all count are all supply)
+        -:   14: * Used some of the provided testUpdateCoins.c
+        -:   15: * -----------------------------------------------------------------------
+        -:   16: * Include the following lines in the makefile:
+        -:   17: *
+        -:   18: * unittest2: unittest2.c dominion.o rngs.o
+        -:   19: *      gcc -o unittest2 -g  unittest2.c dominion.o rngs.o $(CFLAGS)
+        -:   20: */
+        -:   21:
+        -:   22:#include "dominion.h"
+        -:   23:#include "dominion_helpers.h"
+        -:   24:#include "rngs.h"
+        -:   25:#include <string.h>
+        -:   26:#include <assert.h>
+        -:   27:#include <stdio.h>
+        -:   28:#include <stdlib.h>
+        -:   29:#include <time.h>
+        -:   30:#include <math.h>
+        -:   31:
+function main called 1 returned 100% blocks executed 78%
+        1:   32:int main() 
+        -:   33:{
+        -:   34:    int gameStatus, seed;
+        1:   35:    int bugCount = 0;
+        1:   36:    int numPlayer = 2;
+        1:   37:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   38:               , remodel, smithy, village, baron, great_hall};
+        -:   39:    struct gameState G;
+        -:   40:
+        1:   41:    printf("Testing isGameOver function...\n");
+call    0 returned 100%
+        1:   42:    printf("Checking the isGameOver function correct tells us if game is over\n");
+call    0 returned 100%
+        1:   43:    printf("---------------------------------------------------------------------\n\n");
+call    0 returned 100%
+        -:   44:
+        -:   45:    // no empty test - game should not be over
+        1:   46:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:   47:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:   48:    initializeGame(numPlayer, k, seed, &G); // initialize a new game
+call    0 returned 100%
+        1:   49:    printf("Test: Checking isGameOver if all supply piles are not empty.\n");
+call    0 returned 100%
+        -:   50:
+        1:   51:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:   52:    if(gameStatus == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:   53:        printf("Great! isGameOver function returned that game is not over.\n\n");
+call    0 returned 100%
+        -:   54:    else{
+    #####:   55:        printf("BUG!!! isGameOver function returned that game is over.\n\n");
+call    0 never executed
+    #####:   56:        bugCount++;
+        -:   57:    }
+        -:   58:    
+        -:   59:    // no provinces test - game should be over
+        1:   60:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:   61:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:   62:    initializeGame(numPlayer, k, seed, &G); // initialize a new game
+call    0 returned 100%
+        1:   63:    printf("Test: Checking isGameOver if there are no more provinces.\n");
+call    0 returned 100%
+        1:   64:    G.supplyCount[province] = 0; // setting # of province in pile to 0
+        -:   65:
+        1:   66:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:   67:    if(gameStatus == 1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:   68:        printf("Great! isGameOver function returned that game is over.\n\n");
+call    0 returned 100%
+        -:   69:    else{
+    #####:   70:        printf("BUG!!! isGameOver function returned that game is not over.\n\n");
+call    0 never executed
+    #####:   71:        bugCount++;
+        -:   72:    }
+        -:   73:
+        -:   74:    // 1 empty supply piles (not province) test with 2 players - game should not be over
+        1:   75:    numPlayer = 2;
+        1:   76:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:   77:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:   78:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:   79:    printf("Test: Checking isGameOver if there are 1 empty supply pile (silver) test with 2 players.\n");
+call    0 returned 100%
+        1:   80:    G.supplyCount[silver] = 0; // setting # of silver in pile to 0
+        -:   81:
+        1:   82:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:   83:    if(gameStatus == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:   84:        printf("Great! isGameOver function returned that game is not over.\n\n");
+call    0 returned 100%
+        -:   85:    else{
+    #####:   86:        printf("BUG!!! isGameOver function returned that game is over.\n\n");
+call    0 never executed
+    #####:   87:        bugCount++;
+        -:   88:    }
+        -:   89:
+        -:   90:    // 2 empty supply piles (not province) test with 2 players - game should not be over
+        1:   91:    numPlayer = 2;
+        1:   92:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:   93:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:   94:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:   95:    printf("Test: Checking isGameOver if there are 2 empty supply piles (gold, curse) test with 2 players.\n");
+call    0 returned 100%
+        1:   96:    G.supplyCount[gold] = 0; // setting # of gold in pile to 0
+        1:   97:    G.supplyCount[curse] = 0; // setting # of curse in pile to 0
+        -:   98:
+        1:   99:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  100:    if(gameStatus == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  101:        printf("Great! isGameOver function returned that game is not over.\n\n");
+call    0 returned 100%
+        -:  102:    else{
+    #####:  103:        printf("BUG!!! isGameOver function returned that game is over.\n\n");
+call    0 never executed
+    #####:  104:        bugCount++;
+        -:  105:    }
+        -:  106:
+        -:  107:    // 2 empty supply piles (1 is province) test with 2 players - game should not be over
+        1:  108:    numPlayer = 2;
+        1:  109:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:  110:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  111:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:  112:    printf("Test: Checking isGameOver if there are 2 empty supply piles (great_hall, province) test with 2 players.\n");
+call    0 returned 100%
+        1:  113:    G.supplyCount[great_hall] = 0; // setting # of great_hall in pile to 0
+        1:  114:    G.supplyCount[province] = 0; // setting # of province in pile to 0
+        -:  115:
+        1:  116:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  117:    if(gameStatus == 1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  118:        printf("Great! isGameOver function returned that game is over.\n\n");
+call    0 returned 100%
+        -:  119:    else{
+    #####:  120:        printf("BUG!!! isGameOver function returned that game is not over.\n\n");
+call    0 never executed
+    #####:  121:        bugCount++;
+        -:  122:    }
+        -:  123:
+        -:  124:    // 1 empty treasure supply pile and 2 empty kingdom supply piles test with 2 players - game should be over
+        1:  125:    numPlayer = 2;
+        1:  126:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:  127:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  128:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:  129:    printf("Test: Checking isGameOver if there are 3 empty supply piles (copper, remodel, smithy) test with 2 players.\n");
+call    0 returned 100%
+        1:  130:    G.supplyCount[copper] = 0; // setting # of copper in pile to 0
+        1:  131:    G.supplyCount[remodel] = 0; // setting # of remodel in pile to 0
+        1:  132:    G.supplyCount[smithy] = 0; // setting # of smithy in pile to 0
+        -:  133:
+        1:  134:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  135:    if(gameStatus == 1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  136:        printf("Great! isGameOver function returned that game is over.\n\n");
+call    0 returned 100%
+        -:  137:    else{
+    #####:  138:        printf("BUG!!! isGameOver function returned that game is not over.\n\n");
+call    0 never executed
+    #####:  139:        bugCount++;
+        -:  140:    }
+        -:  141:
+        -:  142:    // 3 empty treasure supply piles test with 2 players - game should be over
+        1:  143:    numPlayer = 2;
+        1:  144:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:  145:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  146:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:  147:    printf("Test: Checking isGameOver if there are 3 empty treasure supply piles test with 2 players.\n");
+call    0 returned 100%
+        1:  148:    G.supplyCount[copper] = 0; // setting # of copper in pile to 0
+        1:  149:    G.supplyCount[silver] = 0; // setting # of silver in pile to 0
+        1:  150:    G.supplyCount[gold] = 0; // setting # of gold in pile to 0
+        -:  151:
+        1:  152:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  153:    if(gameStatus == 1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  154:        printf("Great! isGameOver function returned that game is over.\n\n");
+call    0 returned 100%
+        -:  155:    else{
+    #####:  156:        printf("BUG!!! isGameOver function returned that game is not over.\n\n");
+call    0 never executed
+    #####:  157:        bugCount++;
+        -:  158:    }
+        -:  159:
+        -:  160:    // 3 empty kingdom supply piles test with 2 players - game should be over
+        1:  161:    numPlayer = 2;
+        1:  162:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:  163:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  164:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:  165:    printf("Test: Checking isGameOver if there are 3 empty supply piles test with 2 players.\n");
+call    0 returned 100%
+        1:  166:    G.supplyCount[adventurer] = 0; // setting # of adventurer in pile to 0
+        1:  167:    G.supplyCount[council_room] = 0; // setting # of council_room in pile to 0
+        1:  168:    G.supplyCount[feast] = 0; // setting # of feast in pile to 0
+        -:  169:
+        1:  170:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  171:    if(gameStatus == 1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  172:        printf("Great! isGameOver function returned that game is over.\n\n");
+call    0 returned 100%
+        -:  173:    else{
+    #####:  174:        printf("BUG!!! isGameOver function returned that game is not over.\n\n");
+call    0 never executed
+    #####:  175:        bugCount++;
+        -:  176:    }
+        -:  177:
+        -:  178:    // 3 empty supply piles (1 is province) test with 2 players - game should not be over
+        1:  179:    numPlayer = 2;
+        1:  180:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:  181:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  182:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:  183:    printf("Test: Checking isGameOver if there are 3 empty supply piles (gardens, copper, province) test with 2 players.\n");
+call    0 returned 100%
+        1:  184:    G.supplyCount[gardens] = 0; // setting # of great_hall in pile to 0
+        1:  185:    G.supplyCount[copper] = 0; // setting # of great_hall in pile to 0 
+        1:  186:    G.supplyCount[province] = 0; // setting # of province in pile to 0
+        -:  187:
+        1:  188:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  189:    if(gameStatus == 1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  190:        printf("Great! isGameOver function returned that game is over.\n\n");
+call    0 returned 100%
+        -:  191:    else{
+    #####:  192:        printf("BUG!!! isGameOver function returned that game is not over.\n\n");
+call    0 never executed
+    #####:  193:        bugCount++;
+        -:  194:    }
+        -:  195:
+        -:  196:    // 4 empty kingdom supply piles test with 5 players - game should not be over
+        1:  197:    numPlayer = 5;
+        1:  198:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:  199:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  200:    initializeGame(numPlayer, k, seed, &G); // initialize a new game   
+call    0 returned 100%
+        1:  201:    printf("Test: Checking isGameOver if there are 4 empty kingdom supply piles test with 5 players.\n");
+call    0 returned 100%
+        1:  202:    G.supplyCount[gardens] = 0; // setting # of adventurer in pile to 0
+        1:  203:    G.supplyCount[mine] = 0; // setting # of council_room in pile to 0
+        1:  204:    G.supplyCount[remodel] = 0; // setting # of feast in pile to 0
+        -:  205:
+        1:  206:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  207:    if(gameStatus == 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  208:        printf("Great! isGameOver function returned that game is not over.\n\n");
+call    0 never executed
+        -:  209:    else{
+        1:  210:        printf("BUG!!! isGameOver function returned that game is over.\n\n");
+call    0 returned 100%
+        1:  211:        bugCount++;
+        -:  212:    }
+        -:  213:
+        -:  214:    // testing 3 empty kingdom cards piles that weren't part of 10 that we're using
+        1:  215:    numPlayer = 2;
+        1:  216:    seed = (rand() % 100); // random seed
+call    0 returned 100%
+        1:  217:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:  218:    initializeGame(numPlayer, k, seed, &G); // initialize a new game    
+call    0 returned 100%
+        1:  219:    printf("Test: Checking isGameOver if there are 3 empty supply piles (gardens, copper, province) test with 2 players.\n");
+call    0 returned 100%
+        1:  220:    G.supplyCount[minion] = 0; // setting # of minion in pile to 0
+        1:  221:    G.supplyCount[sea_hag] = 0; // setting # of sea_hag in pile to 0 
+        1:  222:    G.supplyCount[cutpurse] = 0; // setting # of cutpurse in pile to 0
+        -:  223:
+        1:  224:    gameStatus = isGameOver(&G);
+call    0 returned 100%
+        1:  225:    if(gameStatus == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  226:        printf("Great! isGameOver function returned that game is not over.\n\n");
+call    0 returned 100%
+        -:  227:    else{
+    #####:  228:        printf("BUG!!! isGameOver function returned that game is over.\n\n");
+call    0 never executed
+    #####:  229:        bugCount++;
+        -:  230:    }
+        -:  231:
+        -:  232:
+        -:  233:    // output the test results overall
+        1:  234:    printf("--------------------------------------------\n");
+call    0 returned 100%
+        1:  235:    printf("Final Testing results of isGameOver function\n");
+call    0 returned 100%
+        1:  236:    printf("-------------------------------------------\n");
+call    0 returned 100%
+        1:  237:    if(bugCount == 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  238:        printf("All tests passed for the isGameOver function!\n\n");
+call    0 never executed
+        -:  239:    else
+        1:  240:        printf("isGameOver failed to say if game was over for %d condition(s), check above for which ones.\n\n", bugCount);
+call    0 returned 100%
+        -:  241:    
+        1:  242:    return 0;
+        -:  243:}

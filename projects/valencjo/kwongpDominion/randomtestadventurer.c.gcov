@@ -1,0 +1,442 @@
+        -:    0:Source:randomtestadventurer.c
+        -:    0:Graph:randomtestadventurer.gcno
+        -:    0:Data:randomtestadventurer.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* -----------------------------------------------------------------------
+        -:    2: * CS362-004 Summer 2017 Assignment 4
+        -:    3: * randomtestadventurer.c
+        -:    4: *
+        -:    5: * Patrick Kwong
+        -:    6: * kwongp@oregonstate.edu
+        -:    7: * 
+        -:    8: * Random test generator for Adventurer
+        -:    9: * - reveal cards from deck until you reveal 2 treasure cards
+        -:   10: * - put 2 treasure cards in hand and discarded other revealed cards
+        -:   11: * 
+        -:   12: * Used provided cardtest4.c, dominion.c, and testUpdateCoins.c provided code
+        -:   13: * -----------------------------------------------------------------------
+        -:   14: * Include the following lines in the makefile:
+        -:   15: *
+        -:   16: * randomtestadventurer: randomtestadventurer.c dominion.o rngs.o
+        -:   17: *      gcc -o randomtestadventurer -g randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+        -:   18: */
+        -:   19:
+        -:   20:#include "dominion.h"
+        -:   21:#include "dominion_helpers.h"
+        -:   22:#include <string.h>
+        -:   23:#include <stdio.h>
+        -:   24:#include <assert.h>
+        -:   25:#include "rngs.h"
+        -:   26:#include <stdlib.h>
+        -:   27:#include <time.h>
+        -:   28:#include <math.h>
+        -:   29:#include <stdbool.h>
+        -:   30:
+        -:   31:#define TEST_RUNS 1000
+        -:   32:
+function main called 1 returned 100% blocks executed 84%
+        1:   33:int main() {
+        -:   34:    int i, j, r, z;
+        -:   35:    int numPlayer;
+        1:   36:    int bugCount = 0;
+        1:   37:    int flag = 0; // flag for other player piles
+        -:   38:    int prevCount, afterCount;
+        -:   39:	struct gameState G, prevG;
+        1:   40:	int seed = 1000;
+        1:   41:	srand(time(NULL));
+call    0 returned 100%
+call    1 returned 100%
+        -:   42:	int k[10]; // for kingdom cards
+        -:   43:	int numKingdomCards;
+        -:   44:	bool haveCard;
+        -:   45:	int treasureNum, treasureDraw;
+        1:   46:	int pass = 0; // track the number of passes
+        1:   47:	int fail = 0; // track the number of fails
+        -:   48:	
+        1:   49:	printf("----------------------------------------------\n");		
+call    0 returned 100%
+        1:   50:	printf(" Testing Random Test Generator for Adventurer\n");
+call    0 returned 100%
+        1:   51:	printf("----------------------------------------------\n");	
+call    0 returned 100%
+        -:   52:	
+     1001:   53:	for(z = 1; z <= TEST_RUNS; z++) // test for loop
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:   54:	{
+        -:   55:		// random kingdom cards set (9 random with adventurer card)
+     1000:   56:		numKingdomCards = 0;
+    15331:   57:		while(numKingdomCards < 10)
+branch  0 taken 93%
+branch  1 taken 7% (fallthrough)
+        -:   58:		{
+    13331:   59:			haveCard = false;
+    13331:   60:			r = (rand() % 20 + 7); // gets a random kingdom card
+call    0 returned 100%
+        -:   61:			
+        -:   62:			// check if already have card in kingdom set k
+    80379:   63:			for(i = 0; i < numKingdomCards; i++)
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+    67048:   64:				if(k[i] == r)
+branch  0 taken 5% (fallthrough)
+branch  1 taken 95%
+     3331:   65:					haveCard = true;
+        -:   66:			
+        -:   67:			// if we don't have it, add it to k set and increment the numKingdomCards
+    13331:   68:			if(!haveCard)
+branch  0 taken 75% (fallthrough)
+branch  1 taken 25%
+        -:   69:			{
+    10000:   70:				k[numKingdomCards] = r;
+    10000:   71:				numKingdomCards++;
+        -:   72:			}
+        -:   73:		}
+        -:   74:		// now with random set, we have to make sure adventurer card is in the kingdom pile
+        -:   75:		// if not we'll randomly replace one of the 10 kindgom cards with an adventurer.
+     1000:   76:		haveCard = false;
+        -:   77:		// check 10 kingdom pile for adventurer
+    11000:   78:		for(i = 0; i < 10; i++)
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+        -:   79:		{
+    10000:   80:			if(k[i] == adventurer)
+branch  0 taken 5% (fallthrough)
+branch  1 taken 95%
+        -:   81:			{
+      474:   82:				haveCard = true;
+        -:   83:			}
+        -:   84:		}
+        -:   85:		// no adventurer found, have to randomly add it.
+     1000:   86:		if(!haveCard)
+branch  0 taken 53% (fallthrough)
+branch  1 taken 47%
+        -:   87:		{
+      526:   88:			r = (rand() % 10); // random position
+call    0 returned 100%
+      526:   89:			k[r] = adventurer;
+        -:   90:		}
+        -:   91:		
+        -:   92:		// random number of players from 2 to 5
+     1000:   93:		numPlayer = ((rand() % 3) + 2);
+call    0 returned 100%
+        -:   94:
+     1000:   95:		printf("------------------------------------\n");
+call    0 returned 100%
+     1000:   96:		printf(" Starting Test #%d for Adventurer\n", z);
+call    0 returned 100%
+     1000:   97:		printf("------------------------------------\n");
+call    0 returned 100%
+        -:   98:		
+     1000:   99:		memset(&G, 23, sizeof(struct gameState));   // clear the game state
+     1000:  100:		initializeGame(numPlayer, k, seed, &G); // initialize a new game
+call    0 returned 100%
+        -:  101:		
+        -:  102:		// set random deck count for each player
+     4055:  103:		for(i = 0; i < numPlayer; i++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+     3055:  104:			G.deckCount[i] = (rand() % (MAX_DECK/numPlayer));
+call    0 returned 100%
+        -:  105:		
+        -:  106:		// fill each players' decks with random cards
+     4055:  107:		for(i = 0; i < numPlayer; i++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+        -:  108:		{
+   252175:  109:			for(j = 0; j < G.deckCount[i]; j++) 
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:  110:			{
+   249120:  111:				r = rand() % 3;
+call    0 returned 100%
+   249120:  112:				switch(r) 
+branch  0 taken 33%
+branch  1 taken 33%
+branch  2 taken 33%
+branch  3 taken 0%
+        -:  113:				{
+    83086:  114:					case 0: G.deck[i][j] = (rand() % 4); // victory card 
+call    0 returned 100%
+    83086:  115:						break;
+    83272:  116:					case 1: G.deck[i][j] = (rand() % 3) + 4; // treasuer card 
+call    0 returned 100%
+    83272:  117:						break;
+    82762:  118:					case 2: G.deck[i][j] = k[(rand() % 10)]; // kingdom card 
+call    0 returned 100%
+    82762:  119:						break;
+        -:  120:				}
+        -:  121:			}
+        -:  122:		}
+        -:  123:		
+        -:  124:		// initialize counters
+     1000:  125:		treasureNum = 0; 
+     1000:  126:		treasureDraw = 0;
+     1000:  127:		bugCount = 0;
+        -:  128:		
+        -:  129:		// get the number of treasures in deck
+    88866:  130:		for(i = 0; i < G.deckCount[0]; i++)
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+    87866:  131:			if(G.deck[0][i] == copper || G.deck[0][i] == silver || G.deck[0][i] == gold)
+branch  0 taken 89% (fallthrough)
+branch  1 taken 11%
+branch  2 taken 87% (fallthrough)
+branch  3 taken 13%
+branch  4 taken 15% (fallthrough)
+branch  5 taken 85%
+    29593:  132:				treasureNum++;
+        -:  133:			
+     1000:  134:		printf("\nNumber of treasures in deck: %d.\n", treasureNum);
+call    0 returned 100%
+        -:  135:		
+        -:  136:		// calculated expected treasure to draw from adventure card
+     1000:  137:		if(treasureNum == 0)
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+       17:  138:			treasureDraw = 0;
+      983:  139:		else if(treasureNum == 1)
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+       18:  140:			treasureDraw = 1;
+        -:  141:		else
+      965:  142:			treasureDraw = 2;	
+        -:  143:		
+     1000:  144:		memcpy(&prevG, &G, sizeof(struct gameState)); //create clone of game state to run tests on
+     1000:  145:		adventurer_func(&G);
+call    0 returned 100%
+        -:  146:		
+        -:  147:		/* tried cardEffect instead of my refactored function
+        -:  148:		int handPos, choice1, choice2, choice3, bonus;
+        -:  149:		choice1 = choice2 = choice3 = bonus = 0;
+        -:  150:		
+        -:  151:		// find hand position of adventurer card
+        -:  152:		for(i = 0; i < G.handCount[0]; i++)
+        -:  153:		{
+        -:  154:			if(G.hand[0][i] == adventurer)
+        -:  155:			{
+        -:  156:				handPos = i;
+        -:  157:			}
+        -:  158:		}
+        -:  159:		
+        -:  160:		cardEffect(adventurer, choice1, choice2, choice3, &G, handPos, &bonus);
+        -:  161:		*/
+        -:  162:		// printf("Deck Count: %d\n", G.deckCount[0]);
+        -:  163:		/* check that deck, discard, hand contents are random
+        -:  164:		printf("Deck Contents\n");
+        -:  165:		for(i = 0; i < G.deckCount[0]; i++)
+        -:  166:			printf("Position %d, Card: %d\n", i, G.deck[0][i]);
+        -:  167:		
+        -:  168:		printf("Discard Contents\n");
+        -:  169:		for(i = 0; i < G.discardCount[0]; i++)
+        -:  170:			printf("Position %d, Card: %d\n", i, G.discard[0][i]);
+        -:  171:
+        -:  172:		printf("Hand Contents\n");
+        -:  173:		for(i = 0; i < G.handCount[0]; i++)
+        -:  174:			printf("Position %d, Card: %d\n", i, G.hand[0][i]);
+        -:  175:		*/
+        -:  176:		
+        -:  177:		// get hand counts
+     1000:  178:		prevCount = prevG.handCount[0];
+     1000:  179:		afterCount = G.handCount[0];
+        -:  180:				
+        -:  181:		// check if correct number of cards after adventurer card
+     1000:  182:		printf("\nChecking if correct number of cards after using Adventurer.\n");
+call    0 returned 100%
+     1000:  183:		printf("Previous hand count: %d, After Adventurer: %d\n", prevCount, afterCount);
+call    0 returned 100%
+     1000:  184:		printf("Expected hand count after Adventurer: %d\n", (prevCount + (treasureDraw - 1)));
+call    0 returned 100%
+     1000:  185:		if((prevCount + (treasureDraw - 1)) != G.handCount[0])
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        -:  186:		{
+     1000:  187:			printf("Bug!!! Ended with the incorrect number of cards in hand after Adventurer.\n");
+call    0 returned 100%
+     1000:  188:			bugCount++;
+        -:  189:		}
+        -:  190:		else
+    #####:  191:			printf("Great! Ended with the correct number of cards in hand after Adventurer.\n");
+call    0 never executed
+        -:  192:
+        -:  193:		// check if adventurer added the only treasure cards to hand 
+     1000:  194:		printf("\nChecking if Adventurer adds only treasure cards to hand.\n");
+call    0 returned 100%
+     1000:  195:		if(G.hand[0][G.handCount[0]-2] != copper && G.hand[0][G.handCount[0]-2] != silver && G.hand[0][G.handCount[0]-2] != gold)
+branch  0 taken 64% (fallthrough)
+branch  1 taken 36%
+branch  2 taken 49% (fallthrough)
+branch  3 taken 51%
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+        -:  196:		{
+    #####:  197:			printf("Bug!!! Adventurer added a card beside a treasure.\n");
+call    0 never executed
+    #####:  198:			bugCount++;
+        -:  199:		}
+     1000:  200:		else if(G.hand[0][G.handCount[0]-1] != copper && G.hand[0][G.handCount[0]-1] != silver && G.hand[0][G.handCount[0]-1] != gold)
+branch  0 taken 66% (fallthrough)
+branch  1 taken 34%
+branch  2 taken 50% (fallthrough)
+branch  3 taken 50%
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+        -:  201:		{
+    #####:  202:			printf("Bug!!! Adventurer added a card beside a treasure.\n");
+call    0 never executed
+    #####:  203:			bugCount++;
+        -:  204:		}
+        -:  205:		else
+     1000:  206:			printf("Great! Adventurer added only treasure cards to hand.\n");
+call    0 returned 100%
+        -:  207:
+        -:  208:		// check if adventurer drew enough cards from deck 
+     1000:  209:		printf("\nChecking if Adventurer drew enough cards to hand.\n");
+call    0 returned 100%
+     1000:  210:		if(prevG.deckCount[0] - treasureDraw < G.deckCount[0])
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:  211:		{
+    #####:  212:			printf("Bug!!! Adventurer didn't draw enough cards from the deck.\n");
+call    0 never executed
+    #####:  213:			bugCount++;
+        -:  214:		}
+        -:  215:		else
+     1000:  216:			printf("Great! Adventurer drew enough cards from deck.\n");
+call    0 returned 100%
+        -:  217:
+        -:  218:		// check if adventurer discarded the correct number cards to hand 
+     1000:  219:		printf("\nChecking if Adventurer card discarded correct number of cards to hand.\n");
+call    0 returned 100%
+     1000:  220:		printf("Previous deck count: %d cards, After Adventurer: %d cards\n", prevG.deckCount[0], G.deckCount[0]);    
+call    0 returned 100%
+     1000:  221:		printf("Previous discard count: %d cards, After Adventurer: %d cards\n", prevG.discardCount[0], G.discardCount[0]);
+call    0 returned 100%
+     1000:  222:		printf("Expected deck count after Adventurer: %d card.\n", (prevG.deckCount[0] - treasureDraw));
+call    0 returned 100%
+     1000:  223:		if((prevG.deckCount[0] - G.deckCount[0]) == (G.deckCount[0] - prevG.deckCount[0] + 1))
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:  224:		{
+    #####:  225:			printf("Bug!!! Adventurer discarded the incorrect number of cards to hand.\n");
+call    0 never executed
+    #####:  226:			bugCount++;
+        -:  227:		}
+        -:  228:		else
+     1000:  229:			printf("Great! Adventurer discarded the correct number of cards to hand.\n");
+call    0 returned 100%
+        -:  230:
+        -:  231:		// check if adventurer altered other player's cards
+     1000:  232:		printf("\nChecking if adventurer card altered other player's hand.\n");
+call    0 returned 100%
+     1000:  233:		if(prevG.handCount[1] != G.handCount[1])
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:  234:		{
+    #####:  235:			printf("Bug!!! Adventurer altered other player's cards\n");
+call    0 never executed
+    #####:  236:			bugCount++;
+        -:  237:		}
+     1000:  238:		else if(prevG.deckCount[1] != G.deckCount[1])
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:  239:		{
+    #####:  240:			printf("Bug!!! Adventurer altered other player's cards\n");
+call    0 never executed
+    #####:  241:			bugCount++;
+        -:  242:		}
+     1000:  243:		else if(prevG.discardCount[1] != G.discardCount[1]){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  244:			printf("Bug!!! Adventurer altered other player's cards\n");
+call    0 never executed
+    #####:  245:			bugCount++;
+        -:  246:		}
+        -:  247:		else
+     1000:  248:			printf("Great! Adventurer didn't alter other player's cards.\n");
+call    0 returned 100%
+        -:  249:		
+        -:  250:		// check if Adventurer altered the victory and kingdom piles
+     1000:  251:		printf("\nChecking if Adventurer altered the Victory and Kingdom piles.\n");
+call    0 returned 100%
+     1000:  252:		int arraySize = sizeof(G.supplyCount) / sizeof(int);
+    28000:  253:		for(i = 0; i < arraySize; i++){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+    27000:  254:			if(G.supplyCount[i] != prevG.supplyCount[i]){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  255:				flag = 1;
+        -:  256:			}
+        -:  257:		}
+     1000:  258:		if(flag == 0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+     1000:  259:			printf("Great! Adventurer didn't alter the Victory and Kingdom piles.\n");
+call    0 returned 100%
+        -:  260:		else
+        -:  261:		{
+    #####:  262:			printf("Bug!!! Kingdom/Victory supplies have been altered!\n");
+call    0 never executed
+    #####:  263:			bugCount++;
+        -:  264:		}
+        -:  265:		
+        -:  266:		// output the test results overall
+     1000:  267:		printf("--------------------------------------------------\n");
+call    0 returned 100%
+     1000:  268:		printf("Test #%d results for Adventurer\n", z);
+call    0 returned 100%
+     1000:  269:		printf("--------------------------------------------------\n");
+call    0 returned 100%
+        -:  270:
+     1000:  271:		if(bugCount == 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:  272:		{
+    #####:  273:			printf("All tests passed for the Adventurer!\n\n");
+call    0 never executed
+    #####:  274:			pass++;
+        -:  275:		}
+        -:  276:		else
+        -:  277:		{
+     1000:  278:			printf("Adventurer failed for %d condition(s), check above for which ones.\n\n", bugCount);
+call    0 returned 100%
+     1000:  279:			fail++;
+        -:  280:		}
+        -:  281:		
+        -:  282:		/* checking deck, discard, hand contents
+        -:  283:		printf("Deck Contents\n");
+        -:  284:		for(i = 0; i < G.deckCount[0]; i++)
+        -:  285:			printf("Position %d, Card: %d\n", i, G.deck[0][i]);
+        -:  286:		
+        -:  287:		printf("Discard Contents\n");
+        -:  288:		for(i = 0; i < G.discardCount[0]; i++)
+        -:  289:			printf("Position %d, Card: %d\n", i, G.discard[0][i]);
+        -:  290:
+        -:  291:		printf("Hand Contents\n");
+        -:  292:		for(i = 0; i < G.handCount[0]; i++)
+        -:  293:			printf("Position %d, Card: %d\n", i, G.hand[0][i]);
+        -:  294:		*/
+        -:  295:		
+        -:  296:	}
+        -:  297:	
+        -:  298:	// output the final test results overall
+        1:  299:	printf("---------------------------------------------------\n");
+call    0 returned 100%
+        1:  300:	printf("Final Testing results for Adventurer\n");
+call    0 returned 100%
+        1:  301:	printf("---------------------------------------------------\n");
+call    0 returned 100%
+        -:  302:
+        1:  303:	if(fail == 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  304:		printf("All tests passed for the Adventurer! Amazing!\n\n");
+call    0 never executed
+        -:  305:	else
+        1:  306:		printf("Adventurer passed %d tests and failed %d tests, check above for which ones.\n\n", pass, fail);
+call    0 returned 100%
+        -:  307:		
+        1:  308:	return 0;
+        -:  309:}
